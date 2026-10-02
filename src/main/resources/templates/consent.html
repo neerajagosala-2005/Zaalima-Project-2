@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Authorization Consent</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            width: 420px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #222;
+        }
+
+        p {
+            color: #555;
+        }
+
+        .scope {
+            background: #f1f3f5;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .approve {
+            background: #198754;
+            color: white;
+        }
+
+        .cancel {
+            background: #dc3545;
+            color: white;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h2>Application Authorization</h2>
+
+    <p>
+        The application
+        <strong th:text="${clientId}">zaalima-client</strong>
+        is requesting access to your account.
+    </p>
+
+    <p>
+        <strong>Requested permissions:</strong>
+    </p>
+
+    <!-- Display requested scopes -->
+    <div th:each="item : ${#strings.arraySplit(scope, ' ')}"
+         class="scope"
+         th:text="${item}">
+        openid
+    </div>
+
+    <!-- APPROVE -->
+    <form method="post" action="/oauth2/authorize">
+
+        <input type="hidden"
+               name="client_id"
+               th:value="${clientId}">
+
+        <input type="hidden"
+               name="state"
+               th:value="${state}">
+
+        <input type="hidden"
+               name="scope"
+               th:value="${scope}">
+
+        <button type="submit" class="approve">
+            Approve
+        </button>
+
+    </form>
+
+    <!-- CANCEL -->
+    <form method="get" action="/">
+
+        <button type="submit" class="cancel">
+            Cancel
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

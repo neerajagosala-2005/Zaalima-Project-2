@@ -1,0 +1,7 @@
+package com.zaalima.iam_server.repository;
+
+import com.zaalima.iam_server.entity.AuditLog;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AuditLogRepository extends JpaRepository<AuditLog, Long> {
+}

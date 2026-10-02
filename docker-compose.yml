@@ -1,0 +1,38 @@
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: iam-postgres
+    environment:
+      POSTGRES_DB: iam_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: iam-redis
+    ports:
+      - "6379:6379"
+
+  iam-server:
+    image: iam-server:1.0
+    container_name: iam-server
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8443:8443"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/iam_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SENDGRID_API_KEY: ${SENDGRID_API_KEY}
+
+volumes:
+  postgres_data:
