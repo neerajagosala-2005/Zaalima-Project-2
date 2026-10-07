@@ -1,3 +1,4 @@
+
 package com.zaalima.iam_server.service;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -47,4 +48,15 @@ public class RedisService {
                 )
         );
     }
+
+    public void refreshLoginSession(
+            String username,
+            long expirationSeconds) {
+
+        redisTemplate.expire(
+                "login:session:" + username,
+                Duration.ofSeconds(expirationSeconds)
+        );
+    }
 }
+
