@@ -32,3 +32,9 @@ src/main/resources/iam-server.p12
 src/main/resources/iam-server-backup.p12
 src/main/resources/iam-server-new.p12
 *.crt
+
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
