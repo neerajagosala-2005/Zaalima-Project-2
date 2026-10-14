@@ -480,7 +480,7 @@ The frontend provides:
 ## IAM Dashboard
 
 After successful authentication, the user can access the IAM dashboard.
-
+![IAM Dashboard Screenshot](screenshots/dashboard.png)
 The dashboard contains:
 
 * Account Overview
