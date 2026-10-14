@@ -436,7 +436,10 @@ iam-frontend/
 # Frontend Features
 
 ## Authentication
+### User Login
 
+![User Login Screenshot](screenshots/login.png)
+---
 The frontend provides:
 
 * User Registration
@@ -445,26 +448,24 @@ The frontend provides:
 * Logout
 * Authentication state
 * Secure session handling
-### User Login
-
-![User Login Screenshot](screenshots/login.png)
----
 
 ## Multi-Factor Authentication
+### MFA Login
 
+![MFA Login Screenshot](screenshots/mfa-login.png)
+---
 The frontend provides:
 
 * TOTP MFA setup
 * TOTP verification
 * MFA-protected login
 * MFA status display
-### MFA Login
 
-![MFA Login Screenshot](screenshots/mfa-login.png)
----
 
 ## Password Management
+### Forgot Password & Password Reset
 
+![Forgot Password Screenshot](screenshots/forgot-password.png)
 The frontend provides:
 
 * Forgot Password
