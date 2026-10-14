@@ -1,3 +1,4 @@
+
 package com.zaalima.iam_server.service;
 
 import org.springframework.stereotype.Service;
@@ -17,21 +18,19 @@ public class TotpService {
 
     private final SecretGenerator secretGenerator;
     private final CodeVerifier codeVerifier;
-    private final CodeGenerator codeGenerator;
-    private final TimeProvider timeProvider;
 
     public TotpService() {
 
         secretGenerator =
                 new DefaultSecretGenerator();
 
-        codeGenerator =
+        CodeGenerator codeGenerator =
                 new DefaultCodeGenerator(
                         HashingAlgorithm.SHA1,
                         6
                 );
 
-        timeProvider =
+        TimeProvider timeProvider =
                 new SystemTimeProvider();
 
         DefaultCodeVerifier verifier =
@@ -40,16 +39,13 @@ public class TotpService {
                         timeProvider
                 );
 
+        // TOTP codes change every 30 seconds
         verifier.setTimePeriod(30);
 
+        // Allow one time period of clock difference
         verifier.setAllowedTimePeriodDiscrepancy(1);
 
         codeVerifier = verifier;
-
-        System.out.println(
-                "TOTP LIBRARY SELF TEST: "
-                        + testTotpLibrary()
-        );
     }
 
     public String generateSecret() {
@@ -60,29 +56,6 @@ public class TotpService {
     public boolean verifyCode(
             String secret,
             String code) {
-
-        System.out.println(
-                "========== TOTP DEBUG =========="
-        );
-
-        System.out.println(
-                "Secret present: "
-                        + (secret != null && !secret.isBlank())
-        );
-
-        System.out.println(
-                "Secret length: "
-                        + (secret == null
-                        ? 0
-                        : secret.length())
-        );
-
-        System.out.println(
-                "Code length: "
-                        + (code == null
-                        ? 0
-                        : code.length())
-        );
 
         if (secret == null || secret.isBlank()) {
             return false;
@@ -95,104 +68,9 @@ public class TotpService {
         String cleanCode =
                 code.replaceAll("\\s+", "");
 
-        boolean valid =
-                codeVerifier.isValidCode(
-                        secret,
-                        cleanCode
-                );
-
-        System.out.println(
-                "TOTP verification result: "
-                        + valid
+        return codeVerifier.isValidCode(
+                secret,
+                cleanCode
         );
-
-        /*
-         * Temporary diagnostic:
-         * Generate the code that this server expects
-         * for the CURRENT 30-second time window.
-         *
-         * We do NOT print the actual OTP.
-         */
-        try {
-
-            long counter =
-                    timeProvider.getTime() / 30;
-
-            String serverCode =
-                    codeGenerator.generate(
-                            secret,
-                            counter
-                    );
-
-            boolean exactMatch =
-                    serverCode.equals(cleanCode);
-
-            System.out.println(
-                    "Server/Authenicator code match: "
-                            + exactMatch
-            );
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    "Server TOTP diagnostic error: "
-                            + e.getMessage()
-            );
-        }
-
-        System.out.println(
-                "================================"
-        );
-
-        return valid;
-    }
-
-    // Temporary TOTP library self-test
-    public boolean testTotpLibrary() {
-
-        String testSecret =
-                secretGenerator.generate();
-
-        try {
-
-            long counter =
-                    timeProvider.getTime() / 30;
-
-            String testCode =
-                    codeGenerator.generate(
-                            testSecret,
-                            counter
-                    );
-
-            boolean result =
-                    codeVerifier.isValidCode(
-                            testSecret,
-                            testCode
-                    );
-
-            System.out.println(
-                    "========== TOTP LIBRARY TEST =========="
-            );
-
-            System.out.println(
-                    "Library self-test result: "
-                            + result
-            );
-
-            System.out.println(
-                    "======================================="
-            );
-
-            return result;
-
-        } catch (Exception e) {
-
-            System.out.println(
-                    "TOTP library test error: "
-                            + e.getMessage()
-            );
-
-            return false;
-        }
     }
 }
