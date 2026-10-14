@@ -458,7 +458,9 @@ The frontend provides:
 * TOTP verification
 * MFA-protected login
 * MFA status display
+### MFA Login
 
+![MFA Login Screenshot](screenshots/mfa-login.png)
 ---
 
 ## Password Management
