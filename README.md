@@ -445,7 +445,9 @@ The frontend provides:
 * Logout
 * Authentication state
 * Secure session handling
+### User Login
 
+![User Login Screenshot](screenshots/login.png)
 ---
 
 ## Multi-Factor Authentication
